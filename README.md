@@ -1,6 +1,7 @@
 # CsvGenerator
 
-TODO: Write a gem description
+Just a CSV generator :)
+It ensures string fields quoted.
 
 ## Installation
 
@@ -20,11 +21,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+CsvGenerator.create('example.csv') do |csv|
+  csv << ['0123', 456, 'this is a string']
+end
+# writes to example.csv:
+# "0123",456,"this is a string"
+```
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/csv_generator/fork )
+1. Fork it ( https://github.com/cesare/csv_generator/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
