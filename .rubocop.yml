@@ -1,0 +1,11 @@
+inherit_from:
+  - ./.rubocop_todo.yml
+
+Metrics/LineLength:
+  Max: 100
+
+Style/RegexpLiteral:
+  MaxSlashes: 0
+
+Style/UnneededPercentQ:
+  Enabled: false
