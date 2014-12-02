@@ -1,4 +1,4 @@
-require "csv_generator/version"
+require 'csv_generator/version'
 
 class CsvGenerator
   attr_reader :io
@@ -10,7 +10,7 @@ class CsvGenerator
       end
     end
 
-    def with(io, &block)
+    def with(io)
       generator = new(io)
 
       yield generator if block_given?
@@ -68,7 +68,7 @@ class CsvGenerator
 
     def quote(str)
       escaped_string = str.gsub quote_charactor, escaped_quote
-      %Q{"#{escaped_string}"}
+      %("#{escaped_string}")
     end
   end
 end
