@@ -6,7 +6,7 @@ class CsvGenerator
   class << self
     def create(path, mode = 'w', permission = 0644, &block)
       File.open(path, mode, permission) do |io|
-        create io, &block
+        with io, &block
       end
     end
 
