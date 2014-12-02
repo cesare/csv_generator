@@ -4,7 +4,7 @@ class CsvGenerator
   attr_reader :io
 
   class << self
-    def create(path, mode = 'w', permission = 0644, &block)
+    def generate(path, mode = 'w', permission = 0644, &block)
       File.open(path, mode, permission) do |io|
         with io, &block
       end
