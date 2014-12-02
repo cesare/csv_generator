@@ -1,5 +1,7 @@
 # CsvGenerator
 
+[![Build Status](https://semaphoreapp.com/api/v1/projects/ad79168d-d8c1-45c5-9a25-6e8354304f83/300861/badge.png)](https://semaphoreapp.com/cesare/csv_generator)
+
 Just a CSV generator :)
 It ensures string fields quoted.
 
