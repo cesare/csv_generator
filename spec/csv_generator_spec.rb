@@ -1,4 +1,52 @@
+require 'fakefs/spec_helpers'
+
 describe CsvGenerator do
+  describe '.generate' do
+    context 'given only a file name' do
+      include FakeFS::SpecHelpers
+
+      specify do
+        CsvGenerator.generate('test.csv') do |csv|
+          csv << ['test', 123]
+        end
+
+        expect(File.read('test.csv')).to eq %("test",123\r\n)
+      end
+    end
+
+    context 'given the name of an existing file' do
+      include FakeFS::SpecHelpers
+
+      specify do
+        File.open('test.csv', 'w') do |file|
+          file.write(%("existing line",987\r\n))
+        end
+
+        CsvGenerator.generate('test.csv') do |csv|
+          csv << ['test', 123]
+        end
+
+        expect(File.read('test.csv')).to eq %("test",123\r\n)
+      end
+    end
+
+    context 'given "a" as mode' do
+      include FakeFS::SpecHelpers
+
+      specify do
+        File.open('test.csv', 'w') do |file|
+          file.write(%("existing line",987\r\n))
+        end
+
+        CsvGenerator.generate('test.csv', mode: 'a') do |csv|
+          csv << ['test', 123]
+        end
+
+        expect(File.read('test.csv')).to eq %("existing line",987\r\n"test",123\r\n)
+      end
+    end
+  end
+
   describe '#<<' do
     let(:io) { StringIO.new }
     let(:csv) { CsvGenerator.new(io) }
