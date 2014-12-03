@@ -9,20 +9,21 @@ class CsvGenerator
       permission = options[:permission] || 0644
 
       File.open(path, mode, permission) do |io|
-        with io, &block
+        with io, options, &block
       end
     end
 
-    def with(io)
-      generator = new(io)
+    def with(io, options = {})
+      generator = new(io, options)
 
       yield generator if block_given?
       generator
     end
   end
 
-  def initialize(io)
+  def initialize(io, options = {})
     @io = io
+    @options = options
   end
 
   def <<(row_values)
@@ -32,31 +33,48 @@ class CsvGenerator
   private
 
   def row_generator
-    @row_generator ||= RowGenerator.new
+    @row_generator ||= RowGenerator.new(@options)
   end
 
   class RowGenerator
+    KNOWN_OPTIONS = %i(line_separator field_separator quote_charactor).freeze
+
+    attr_reader(*KNOWN_OPTIONS)
+    attr_reader :escaped_quote
+
+    def initialize(options = {})
+      default_config.merge(filter_options options).each do |k, v|
+        instance_variable_set :"@#{k}", v
+      end
+
+      @escaped_quote = quote_charactor * 2
+    end
+
+    private
+
+    def filter_options(hash)
+      hash.select { |k, _| KNOWN_OPTIONS.include? k }
+    end
+
+    def default_config
+      {
+        line_separator: "\r\n",
+        field_separator: ',',
+        quote_charactor: '"',
+      }
+    end
+
+    def escape_quote_character(c)
+      c * 2
+    end
+
+    public
+
     def generate(row_values)
       row_values.map { |value| stringify value }.join(field_separator) + line_separator
     end
 
     private
-
-    def line_separator
-      "\r\n"
-    end
-
-    def field_separator
-      ','
-    end
-
-    def quote_charactor
-      '"'
-    end
-
-    def escaped_quote
-      '""'
-    end
 
     def stringify(value)
       case value
