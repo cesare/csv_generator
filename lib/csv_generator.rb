@@ -37,7 +37,7 @@ class CsvGenerator
   end
 
   class RowGenerator
-    KNOWN_OPTIONS = %i(line_separator field_separator quote_charactor).freeze
+    KNOWN_OPTIONS = %i(line_separator field_separator quote_character).freeze
 
     attr_reader(*KNOWN_OPTIONS)
     attr_reader :escaped_quote
@@ -47,7 +47,7 @@ class CsvGenerator
         instance_variable_set :"@#{k}", v
       end
 
-      @escaped_quote = quote_charactor * 2
+      @escaped_quote = quote_character * 2
     end
 
     private
@@ -60,7 +60,7 @@ class CsvGenerator
       {
         line_separator: "\r\n",
         field_separator: ',',
-        quote_charactor: '"',
+        quote_character: '"',
       }
     end
 
@@ -90,8 +90,8 @@ class CsvGenerator
     end
 
     def quote(str)
-      escaped_string = str.gsub quote_charactor, escaped_quote
-      %("#{escaped_string}")
+      escaped_string = str.gsub quote_character, escaped_quote
+      quote_character + escaped_string + quote_character
     end
   end
 end
