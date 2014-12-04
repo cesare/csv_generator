@@ -83,6 +83,38 @@ describe CsvGenerator do
       end
     end
 
+    context 'given float values' do
+      specify do
+        csv << [1.23, 9.876]
+
+        expect(io.string).to eq %(1.23,9.876\r\n)
+      end
+    end
+
+    context 'given negative numbers' do
+      specify do
+        csv << [-123, -0.987]
+
+        expect(io.string).to eq %(-123,-0.987\r\n)
+      end
+    end
+
+    context 'given nil' do
+      specify do
+        csv << ['test', nil, 123]
+
+        expect(io.string).to eq %("test",,123\r\n)
+      end
+    end
+
+    context 'given dates' do
+      specify do
+        csv << [123, Date.new(2014, 12, 6)]
+
+        expect(io.string).to eq %(123,"2014-12-06"\r\n)
+      end
+    end
+
     context 'when called more than once' do
       specify do
         csv << ['test1', 123]
