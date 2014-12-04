@@ -124,4 +124,39 @@ describe CsvGenerator do
       end
     end
   end
+
+  context 'with options' do
+    context 'given line_separator' do
+      let(:csv) { CsvGenerator.new io, line_separator: "\n" }
+      let(:io) { StringIO.new }
+
+      specify do
+        csv << ['test', 123]
+
+        expect(io.string).to eq %("test",123\n)
+      end
+    end
+
+    context 'given field_separator' do
+      let(:csv) { CsvGenerator.new io, field_separator: "\t" }
+      let(:io) { StringIO.new }
+
+      specify do
+        csv << ['test', 123]
+
+        expect(io.string).to eq %("test"\t123\r\n)
+      end
+    end
+
+    context 'given quote_character' do
+      let(:csv) { CsvGenerator.new io, quote_character: "'" }
+      let(:io) { StringIO.new }
+
+      specify do
+        csv << ['test', %q('single'), %q("double"), 123]
+
+        expect(io.string).to eq %('test','''single''','"double"',123\r\n)
+      end
+    end
+  end
 end
