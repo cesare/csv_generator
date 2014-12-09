@@ -26,6 +26,16 @@ class CsvGenerator
     @options = options
   end
 
+  def generate(enumerable)
+    enumerable.each do |row_instance|
+      if block_given?
+        self << (yield row_instance)
+      else
+        self << row_instance
+      end
+    end
+  end
+
   def <<(row_values)
     io.write row_generator.generate(row_values)
   end

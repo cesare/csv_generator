@@ -47,6 +47,32 @@ describe CsvGenerator do
     end
   end
 
+  describe '#generate' do
+    let(:io) { StringIO.new }
+    let(:csv) { CsvGenerator.new(io) }
+
+    context 'without block' do
+      specify do
+        csv.generate([['test1', 123], ['test2', 987]])
+
+        expect(io.string).to eq %("test1",123\r\n"test2",987\r\n)
+      end
+    end
+
+    context 'with block' do
+      let(:struct) { Struct.new(:name, :score) }
+      let(:rows) { [struct.new('test1', 123), struct.new('test2', 987)] }
+
+      specify do
+        csv.generate(rows) do |s|
+          [s.name, s.score]
+        end
+
+        expect(io.string).to eq %("test1",123\r\n"test2",987\r\n)
+      end
+    end
+  end
+
   describe '#<<' do
     let(:io) { StringIO.new }
     let(:csv) { CsvGenerator.new(io) }
