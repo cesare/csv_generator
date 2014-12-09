@@ -4,20 +4,16 @@ class CsvGenerator
   attr_reader :io
 
   class << self
-    def open(path, options = {}, &block)
+    def open(path, options = {})
       mode = options[:mode] || 'w'
       permission = options[:permission] || 0644
 
       File.open(path, mode, permission) do |io|
-        with io, options, &block
+        generator = new(io, options)
+        yield generator
+
+        generator
       end
-    end
-
-    def with(io, options = {})
-      generator = new(io, options)
-
-      yield generator if block_given?
-      generator
     end
   end
 
