@@ -73,7 +73,10 @@ class User
   attr_reader :name, :score
 end
 
-users = [User.new(name: 'test1', score: 123), User.new(name: 'test2', socre: 987)]
+users = [
+  User.new(name: 'test1', score: 123),
+  User.new(name: 'test2', socre: 987)
+]
 
 CsvGenerator.open('example.csv') do |csv|
   csv.generate(users) do |user|
