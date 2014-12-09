@@ -1,12 +1,12 @@
 require 'fakefs/spec_helpers'
 
 describe CsvGenerator do
-  describe '.generate' do
+  describe '.open' do
     context 'given only a file name' do
       include FakeFS::SpecHelpers
 
       specify do
-        CsvGenerator.generate('test.csv') do |csv|
+        CsvGenerator.open('test.csv') do |csv|
           csv << ['test', 123]
         end
 
@@ -22,7 +22,7 @@ describe CsvGenerator do
           file.write(%("existing line",987\r\n))
         end
 
-        CsvGenerator.generate('test.csv') do |csv|
+        CsvGenerator.open('test.csv') do |csv|
           csv << ['test', 123]
         end
 
@@ -38,7 +38,7 @@ describe CsvGenerator do
           file.write(%("existing line",987\r\n))
         end
 
-        CsvGenerator.generate('test.csv', mode: 'a') do |csv|
+        CsvGenerator.open('test.csv', mode: 'a') do |csv|
           csv << ['test', 123]
         end
 

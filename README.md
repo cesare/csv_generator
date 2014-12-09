@@ -24,7 +24,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-CsvGenerator.generate('example.csv') do |csv|
+CsvGenerator.open('example.csv') do |csv|
   csv << ['0123', 456, 'this is a string']
 end
 # writes to example.csv:
