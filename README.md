@@ -2,8 +2,45 @@
 
 [![Build Status](https://semaphoreapp.com/api/v1/projects/ad79168d-d8c1-45c5-9a25-6e8354304f83/300861/badge.png)](https://semaphoreapp.com/cesare/csv_generator)
 
-Just a CSV generator :)
+Just a CSV generator :)  
 It ensures string fields quoted.
+
+## What is the difference from standard CSV library?
+
+Standard CSV also can quote values with `force_quotes` option, like this:
+
+```ruby
+CSV.open(filename, 'w', force_quotes: true) do |csv|
+  csv << ['0123', 987]
+end
+```
+
+This example above quotes ALL values (including the numeric value 987).  
+It generates
+
+```
+"0123","987"
+```
+
+Note that the numeric value 987 is also quoted.
+In most cases, this behavior is sufficient.
+
+However, sometimes it would be useful if you can distinguish string values and numeric values with quotation, in following manner:
+
+* if a value is quoted, it is a string
+* if not, it is a number
+
+CsvGenerator follows these rules.  
+You can generate:
+
+```
+"0123",987
+```
+
+As you see, numeric value 987 is not quoted.
+
+Some CSV-readable application might interpret "0123" as a string, 987 as a number.
+Is such a case, CsvGenerator will be useful.
 
 ## Installation
 
