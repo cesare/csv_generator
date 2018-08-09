@@ -88,7 +88,7 @@ class CsvGenerator
         ''
       when String
         quote value
-      when Fixnum, Float
+      when 0.class, Float
         value.to_s
       else
         stringify value.to_s
